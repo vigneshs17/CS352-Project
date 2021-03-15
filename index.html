@@ -1,0 +1,46 @@
+<html><head>
+    <title>JS OTP Demo</title>
+    <style>
+        body {
+            margin: 0 auto;
+            font-family: Tahoma, Verdana, Arial, sans-serif;
+        }
+    </style>
+    </head>
+    
+    <body style="width: 45em;">
+    <p id="secret"></p>
+    
+    <p id="secretkey">Secret: </p>
+    <h2 id="code">HOTP code</h2>
+    <p>Counter value is: <span id="counter"></span></p>
+    <button onclick="requestHotp()">Get new code</button>
+    
+    <script src="./hotp.js"></script>
+    <script>
+    $ = function(sel) {
+      return document.querySelector(sel);
+    };
+    
+    var hotp = new jsOTP.hotp();
+    var doge = hotp.getOtp(secret, 0);
+    
+    var counter = 0;
+    var secretkey= "abcdefghijklmnop";
+    $('#secretkey').innerText = "Secret: " + secretkey;
+    $('#counter').innerText = counter;
+    
+    var updateHotp = function(secret, counter, el) {
+      el.innerText = hotp.getOtp(secret, counter);
+    }
+    var updateCounter = function(counter, el) {
+      el.innerText = counter;
+    }
+    var requestHotp = function() {
+      updateHotp(secretkey, counter, $('#code'));
+      updateCounter(++counter, $('#counter'));
+    }
+    </script>
+    
+    </body></html>
+    
