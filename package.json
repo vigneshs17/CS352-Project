@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "core-util-is": "^1.0.2",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.0.0",
+    "hmacsha1": "^1.0.0",
+    "prompt-sync": "^4.2.0"
+  },
+  "browser": {
+    "crypto": false
+  }
+}
