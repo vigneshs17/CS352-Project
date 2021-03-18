@@ -5,6 +5,7 @@ var s = 3; // synchronisation parameter
 // hmac-result is a 20-byte string returned by the HMAC-SHA-1 algorithm
 var digit = 6;
 var queue = [];
+var counter = "0";
 
 function generateOTP() {
     var key="";
@@ -12,12 +13,8 @@ function generateOTP() {
     for(var i=0;i<32;i++) {
         key+=charSet.charAt(Math.floor(Math.random()*charSet.length));
     }
-    var data="";
-    var characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for(var i=0;i<32;i++) {
-        data+=characters.charAt(Math.floor(Math.random()*characters.length));
-    }
-    var hmac_result=CryptoJS.HmacSHA1(key, data).toString();
+    var hmac_result=CryptoJS.HmacSHA1(key, counter).toString();
+    counter = (parseInt(counter, 10) + 1).toString();
     return hotp(hmac_result, digit);
 }
 
@@ -49,7 +46,7 @@ function hotp(hmac_result, digit) {
         var P = (s[offSet] & 0x7f) << 24 | (s[offSet + 1] & 0xff) << 16 | (s[offSet + 2] & 0xff) << 8 | (s[offSet + 3] & 0xff);
         var result = P&0x7FFFFFFF
         return result;
-    }
+    }    
 
     var byteArray = hexStringToByte(hmac_result);
     var sBits = dynamicTruncation(byteArray);
@@ -64,9 +61,6 @@ function validateOTP() {
     
     var found=false;
     enteredOTP = parseInt(enteredOTP, 10);
-    if(enteredOTP===0) {
-        process.exit(0); 
-    }
     queue.forEach(function(hotpValue) {
         console.log(hotpValue);
         if(hotpValue===enteredOTP)
