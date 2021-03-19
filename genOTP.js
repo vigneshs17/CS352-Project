@@ -7,13 +7,38 @@ var digit = 6;
 var queue = [];
 var counter = "0";
 
+function hmacsha1(key, counter) {
+    if(counter.length>64) {
+        counter = CryptoJS.SHA1(counter);
+    }
+
+    var bytes = [];
+    var len = counter.length;
+
+    for(var i=0;i<64;i++) {
+        bytes[i] = i<len ? counter.charCodeAt(i) : 0x00;
+    }
+
+    var iPad = 0x36;
+    var oPad = 0x5C;
+    var S1, S0;
+    for(var i=0;i<64;i++) {
+        S1 += String.fromCharCode(bytes[i]^iPad);
+        S0 += String.fromCharCode(bytes[i]^oPad);
+    }
+
+    var iPadRes = CryptoJS.SHA1(S1+key);
+
+    return CryptoJS.SHA1(S0+iPadRes);
+}
+
 function generateOTP() {
     var key="";
     var charSet="0123456789abcdef";
     for(var i=0;i<32;i++) {
         key+=charSet.charAt(Math.floor(Math.random()*charSet.length));
     }
-    var hmac_result=CryptoJS.HmacSHA1(key, counter).toString();
+    var hmac_result=hmacsha1(key, counter).toString();
     counter = (parseInt(counter, 10) + 1).toString();
     return hotp(hmac_result, digit);
 }
@@ -76,6 +101,3 @@ if(queue.length>2)
 queue.push(hotpValue);
 verified = validateOTP();
 console.log(verified);
-
-
-
