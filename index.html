@@ -1,46 +1,67 @@
-<html><head>
-    <title>JS OTP Demo</title>
-    <style>
-        body {
-            margin: 0 auto;
-            font-family: Tahoma, Verdana, Arial, sans-serif;
-        }
-    </style>
-    </head>
-    
-    <body style="width: 45em;">
-    <p id="secret"></p>
-    
-    <p id="secretkey">Secret: </p>
-    <h2 id="code">HOTP code</h2>
-    <p>Counter value is: <span id="counter"></span></p>
-    <button onclick="requestHotp()">Get new code</button>
-    
-    <script src="./hotp.js"></script>
-    <script>
-    $ = function(sel) {
-      return document.querySelector(sel);
-    };
-    
-    var hotp = new jsOTP.hotp();
-    var doge = hotp.getOtp(secret, 0);
-    
-    var counter = 0;
-    var secretkey= "abcdefghijklmnop";
-    $('#secretkey').innerText = "Secret: " + secretkey;
-    $('#counter').innerText = counter;
-    
-    var updateHotp = function(secret, counter, el) {
-      el.innerText = hotp.getOtp(secret, counter);
-    }
-    var updateCounter = function(counter, el) {
-      el.innerText = counter;
-    }
-    var requestHotp = function() {
-      updateHotp(secretkey, counter, $('#code'));
-      updateCounter(++counter, $('#counter'));
-    }
-    </script>
-    
-    </body></html>
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOTP Using HMAC</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-wrap">
+        <h1>HMAC HOTP</h1>
+        <h5>Generate a new HOTP</h5>
+
+        <div class="form-group">
+          <label for="Scret Key">Secret Key</label>
+          <p id ="secretkey" class="output"></p>
+        </div>
+
+        <div class="form-group">
+          <label for="input-otp">HOTP Code</label>
+          <p id ="code" class="output">******</p>
+      </div>
+
+      <div class="form-group">
+        <label for="input-otp">Counter</label>
+        <p id ="counter" class="output">0</p>
+      </div>
+
+         <button class="btn" onclick="requestHotp()">Get New HOTP</button>
+    </div>
+</div>
+  <!-- DOM -->
+  <p id="secret"></p>  
+  
+  <!-- Include the JS file containing HMAC Algorithm -->
+  <script src="./hotp.js"></script>
+
+  <!-- Scripts to get secret key -->
+  <script>
+      $ = function(sel) {
+        return document.querySelector(sel);
+      };
+      
+      var hotp = new jsOTP.hotp();
+      var doge = hotp.getOtp(secret, 0);
+      
+      var counter = 0;
+      var secretkey= "abcdefghijklmnop";
+      $('#secretkey').innerText =secretkey;
+      $('#counter').innerText = counter;
+      
+      var updateHotp = function(secret, counter, el) {
+        el.innerText = hotp.getOtp(secret, counter);
+      }
+      var updateCounter = function(counter, el) {
+        el.innerText = counter;
+      }
+      var requestHotp = function() {
+        updateHotp(secretkey, counter, $('#code'));
+        updateCounter(++counter, $('#counter'));
+      }
+  </script>
+
+</body>
+</html>

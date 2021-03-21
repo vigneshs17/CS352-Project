@@ -65,16 +65,13 @@
   
   }).call(this);
   
+  
   /**
    * @preserve A JavaScript implementation of the SHA family of hashes, as
    * defined in FIPS PUB 180-2 as well as the corresponding HMAC implementation
    * as defined in FIPS PUB 198a
    *
-   * Copyright Brian Turek 2008-2015
-   * Distributed under the BSD License
-   * See http://caligatio.github.com/jsSHA/ for more information
-   *
-   * Several functions taken from Paul Johnston
+   * Open Source SHA-1 Algorithm
    */
   
    /**
